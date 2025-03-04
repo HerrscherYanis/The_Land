@@ -2,12 +2,10 @@ import pygame
 import time
 
 class screen:
-    name = "The Land"
-    SCREEN_WIDTH
-    SCREEN_HEIGHT
-    def __init__(self,SCREEN_WIDTH, SCREEN_HEIGHT, name = self.name):
+    def __init__(self,SCREEN_WIDTH, SCREEN_HEIGHT, name = "The Land"):
         self.SCREEN_WIDTH = SCREEN_WIDTH
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
+        self.name = name
     
     def Run(self):
         pygame.display.set_caption(self.name)
