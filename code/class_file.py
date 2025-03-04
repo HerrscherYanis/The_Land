@@ -23,3 +23,4 @@ class screen:
                     run = False
             clock.tick(60)
         pygame.quit()
+        
