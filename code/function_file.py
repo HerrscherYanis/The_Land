@@ -1,10 +1,10 @@
 import pygame
 import class_file as cf
 
-game = cf.screen(500,500)
+#game = cf.screen(500,500)
 
-game.start()
+#game.start()
 
 
-game.update()
+#game.update()
 
