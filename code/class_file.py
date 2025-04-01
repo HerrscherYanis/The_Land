@@ -4,7 +4,7 @@ import time
 import function_file as func
 
 class Screen:
-    object_stock = {}
+    object_stock = []
     def __init__(self,SCREEN_WIDTH, SCREEN_HEIGHT, name = "The Land"):
         self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
         self.name = name
@@ -20,9 +20,9 @@ class Screen:
             pygame.display.update()
 
             # self.screen.fill((0, 0, 0))
-            for im in self.image_stock:
+            for im in self.object_stock:
                 try:
-                    self.screen.blit(im[0], im[1])
+                    self.screen.blit(im[1].Image.img, im[1].coord)
                 except:
                     pass
 
@@ -36,7 +36,7 @@ class Screen:
         screen.blit(image.img,(image.width,image.height))
 
     def get(self, name, object_class):
-        self.object_stock.append({ name : object_class })
+        self.object_stock.append([ name , object_class ])
     #    self.image_stock.update({image.name : image})
 
 
@@ -64,7 +64,7 @@ class Player(Object):
         self.life = 0
 
 class Ennemy(Object):
-    super().__init__(Image,x, y)
     def __init__(self):
+        super().__init__(Image,x, y)
         pass
 
