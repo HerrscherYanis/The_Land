@@ -1,7 +1,5 @@
 #import asyncio
 import pygame
-import time
-import function_file as func
 import sqlite3 as sq
 import json
 
@@ -13,13 +11,16 @@ from scripts.clouds import Clouds
 class Screen:
     object_stock = []
     def __init__(self,SCREEN_WIDTH, SCREEN_HEIGHT, name = "The Land"):
-        self.display = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+        self.size = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.display = pygame.Surface((SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         self.name = name
         self.map = 'map.json'
 
-    def set_db():
-        conn=sq.connect("player.dbs")
-        conn.cursor().execute("""create table if not exists player (id integer primary key autoincrement, nom text, life integer, strength integer)""")
+    def interact_DB(self, name, type, arg):
+        conn=sq.connect(name)
+        conn.cursor().execute(arg)
+        if type == "set" or type == True:
+            conn.commit()
         conn.close()
 
     def start(self):
@@ -94,7 +95,7 @@ class Screen:
                     if event.key == pygame.K_RIGHT:
                         self.movement[1] = False
             
-            self.display.blit(pygame.transform.scale(self.display, self.display.get_size()), (0, 0))
+            self.size.blit(pygame.transform.scale(self.display, self.size.get_size()), (0, 0))
             pygame.display.update()
             self.clock.tick(60)
 

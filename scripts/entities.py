@@ -72,8 +72,10 @@ class Player(PhysicsEntity):
         self.air_time = 0
         self.retry_jump = True
         self.name = ""
-        self.life = 100
-        self.strength = 10
+        self.life = 0
+        self.strength = 0
+        self.xp = 0
+        self.level = 1
     
     def update(self, tilemap, movement=(0, 0)):
         super().update(tilemap, movement=movement)
