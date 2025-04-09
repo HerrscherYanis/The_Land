@@ -1,5 +1,5 @@
 import pygame
-
+import db
 class PhysicsEntity:
     def __init__(self, game, e_type, pos, size):
         self.game = game
@@ -92,3 +92,10 @@ class Player(PhysicsEntity):
             self.set_action('run')
         else:
             self.set_action('idle')
+        
+    def check(self, verify = 0):
+        pass
+    #    if verify == 
+
+    def updb(self, where):
+        db.interact_DB("player.dbs", True, f"""UPDATE player SET life = {self.life}, strength = {self.strength}, xp = {self.xp}, level = {self.level} WHERE uuid = {where};""")

@@ -1,6 +1,5 @@
 #import asyncio
 import pygame
-import sqlite3 as sq
 import json
 
 from scripts.utils import load_image, load_images, Animation
@@ -15,13 +14,6 @@ class Screen:
         self.display = pygame.Surface((SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         self.name = name
         self.map = 'map.json'
-
-    def interact_DB(self, name, type, arg):
-        conn=sq.connect(name)
-        conn.cursor().execute(arg)
-        if type == "set" or type == True:
-            conn.commit()
-        conn.close()
 
     def start(self):
             pygame.init()
@@ -58,7 +50,7 @@ class Screen:
 
     def update(self):
         while self.run: 
-
+            self.player.check()
             self.display.fill((14,219,248))
             
             self.scroll[0] += (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30
