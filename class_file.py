@@ -2,6 +2,8 @@
 import pygame
 import time
 import function_file as func
+import sqlite3 as sq
+import json
 
 from scripts.utils import load_image, load_images, Animation
 from scripts.entities import PhysicsEntity, Player
@@ -13,6 +15,12 @@ class Screen:
     def __init__(self,SCREEN_WIDTH, SCREEN_HEIGHT, name = "The Land"):
         self.display = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
         self.name = name
+        self.map = 'map.json'
+
+    def set_db():
+        conn=sq.connect("player.dbs")
+        conn.cursor().execute("""create table if not exists player (id integer primary key autoincrement, nom text, life integer, strength integer)""")
+        conn.close()
 
     def start(self):
             pygame.init()
@@ -39,10 +47,10 @@ class Screen:
                     
             self.clouds = Clouds(self.assets['clouds'], count=16)
         
-            self.player = Player(self, (50, 50), (8, 15))
+            self.player = Player(self, (50, 90), (8, 15))
         
             self.tilemap = Tilemap(self, tile_size=16)
-            self.tilemap.load('map.json')
+            self.tilemap.load(self.map)
         
             self.scroll = [0, 0]
             self.update()
@@ -68,6 +76,10 @@ class Screen:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                 if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_s:
+                        self.save()
+                    if event.key == pygame.K_l:
+                        self.load()
                     if event.key == pygame.K_LEFT:
                         self.movement[0] = True
                     if event.key == pygame.K_RIGHT:
@@ -86,6 +98,13 @@ class Screen:
             pygame.display.update()
             self.clock.tick(60)
 
-    def get(self, name, object_class):
-        self.object_stock.append([ name , object_class ])
-    #    self.image_stock.update({image.name : image})
+    def save(self):
+        with open("save.json", "w", encoding='UTF-8') as file:
+            file.write('{"screen" : {"map" : "' + self.map + '"},"player" :{ "pos" : [' + str(self.player.pos[0]) + "," + str(self.player.pos[1]) + ']} }')
+            print("save")
+    def load(self):
+        with open("save.json", "r", encoding='UTF-8') as file:
+            data = json.loads(file.read())
+            print("load")
+            self.tilemap.load(data["screen"]["map"])
+            self.player.pos = data["player"]["pos"]
