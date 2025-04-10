@@ -14,39 +14,36 @@ class Screen:
         self.display = pygame.Surface((SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         self.name = name
         self.map = 'map.json'
+        pygame.init()
+        pygame.display.set_caption(self.name)
+        self.run = True
+        self.clock = pygame.time.Clock()
 
-    def start(self):
-            pygame.init()
-            pygame.display.set_caption(self.name)
-            self.run = True
-            self.clock = pygame.time.Clock()
+        self.movement = [False, False]
 
-            self.movement = [False, False]
-
-            self.assets = {
-            'decor': load_images('tiles/decor'),
-            'grass': load_images('tiles/grass'),
-            'large_decor': load_images('tiles/large_decor'),
-            'stone': load_images('tiles/stone'),
-            'player': load_image('entities/player/idle/00.png'),
-            'background': load_image('background.png'),
-            'clouds': load_images('clouds'),
-            'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
-            'player/run': Animation(load_images('entities/player/run'), img_dur=4),
-            'player/jump': Animation(load_images('entities/player/jump')),
-            'player/slide': Animation(load_images('entities/player/slide')),
-            'player/wall_slide': Animation(load_images('entities/player/wall_slide')),
-        }
+        self.assets = {
+        'decor': load_images('tiles/decor'),
+        'grass': load_images('tiles/grass'),
+        'large_decor': load_images('tiles/large_decor'),
+        'stone': load_images('tiles/stone'),
+        'player': load_image('entities/player/idle/00.png'),
+        'background': load_image('background.png'),
+        'clouds': load_images('clouds'),
+        'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
+        'player/run': Animation(load_images('entities/player/run'), img_dur=4),
+        'player/jump': Animation(load_images('entities/player/jump')),
+        'player/slide': Animation(load_images('entities/player/slide')),
+        'player/wall_slide': Animation(load_images('entities/player/wall_slide')),
+    }
                     
-            self.clouds = Clouds(self.assets['clouds'], count=16)
+        self.clouds = Clouds(self.assets['clouds'], count=16)
         
-            self.player = Player(self, (50, 90), (8, 15))
+        self.player = Player(self, (50, 90), (8, 15))
         
-            self.tilemap = Tilemap(self, tile_size=16)
-            self.tilemap.load(self.map)
+        self.tilemap = Tilemap(self, tile_size=16)
+        self.tilemap.load(self.map)
         
-            self.scroll = [0, 0]
-            self.update()
+        self.scroll = [0, 0]
 
     def update(self):
         while self.run: 

@@ -98,4 +98,4 @@ class Player(PhysicsEntity):
     #    if verify == 
 
     def updb(self, where):
-        db.interact_DB("player.dbs", True, f"""UPDATE player SET life = {self.life}, strength = {self.strength}, xp = {self.xp}, level = {self.level} WHERE uuid = {where};""")
+        db.interact_DB("player.dbs", True, f"""UPDATE player SET life = ?, strength = ?, xp = ?, level = ? WHERE uuid = ?;""", (self.life, self.strength, self.xp, self.level, self.uuid))
