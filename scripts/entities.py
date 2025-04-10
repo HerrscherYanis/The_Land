@@ -1,5 +1,7 @@
 import pygame
 import db
+import uuid
+
 class PhysicsEntity:
     def __init__(self, game, e_type, pos, size):
         self.game = game
@@ -93,9 +95,17 @@ class Player(PhysicsEntity):
         else:
             self.set_action('idle')
         
-    def check(self, verify = 0):
-        pass
-    #    if verify == 
+    def check(self, verify = None):
+        if verify != None:   
+            if db.interact_DB("player.dbs", """SELECT COUNT(*) FROM player WHERE uuid LIKE ?""", (verify)) == 0:
+                pass
+                #db.interact_DB("player.dbs", """INSERT INTO player (uuid, name,life,strength, xp, level )VALUES(?,?,?,?,?,?)""", (str(uuid.uuid4()), self.name, self.life, self.strength, self.xp, self.level))
+            return True
+        else:
+            print("Please enter character card.")
+            return False
+            
+        
 
-    def updb(self, where):
+    def updb(self, val):
         db.interact_DB("player.dbs", True, f"""UPDATE player SET life = ?, strength = ?, xp = ?, level = ? WHERE uuid = ?;""", (self.life, self.strength, self.xp, self.level, self.uuid))
