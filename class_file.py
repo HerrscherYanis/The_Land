@@ -91,11 +91,11 @@ class Screen:
                 self.clock.tick(60)
 
     def save(self):
-        with open("save.json", "w", encoding='UTF-8') as file:
+        with open("data/save.json", "w", encoding='UTF-8') as file:
             file.write('{"screen" : {"map" : "' + self.map + '"},"player" :{ "pos" : [' + str(self.player.pos[0]) + "," + str(self.player.pos[1]) + ']} }')
             print("save")
     def load(self):
-        with open("save.json", "r", encoding='UTF-8') as file:
+        with open("data/save.json", "r", encoding='UTF-8') as file:
             data = json.loads(file.read())
             print("load")
             self.tilemap.load(data["screen"]["map"])
