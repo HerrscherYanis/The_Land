@@ -1,4 +1,4 @@
 __pycache__
 script/__pycache__
-data/sql/*
+./data/sql/*
 save.json
