@@ -97,9 +97,8 @@ class Player(PhysicsEntity):
         
     def check(self, verify = None):
         if verify != None:   
-            if db.interact_DB("player.dbs", """SELECT COUNT(*) FROM player WHERE uuid LIKE ?""", (verify)) == 0:
+            if db.interact("player.dbs", """SELECT COUNT(*) FROM player WHERE uuid LIKE ?""", (verify)) == 0:
                 pass
-                #db.interact_DB("player.dbs", """INSERT INTO player (uuid, name,life,strength, xp, level )VALUES(?,?,?,?,?,?)""", (str(uuid.uuid4()), self.name, self.life, self.strength, self.xp, self.level))
             return True
         else:
             print("Please enter character card.")
@@ -108,4 +107,4 @@ class Player(PhysicsEntity):
         
 
     def updb(self, val):
-        db.interact_DB("player.dbs", True, f"""UPDATE player SET life = ?, strength = ?, xp = ?, level = ? WHERE uuid = ?;""", (self.life, self.strength, self.xp, self.level, self.uuid))
+        db.interact("player.dbs", True, f"""UPDATE player SET life = ?, strength = ?, xp = ?, level = ? WHERE uuid = ?;""", (self.life, self.strength, self.xp, self.level, self.uuid))

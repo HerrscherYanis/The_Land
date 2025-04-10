@@ -11,7 +11,7 @@ import db
 class Screen:
     object_stock = []
     def __init__(self,SCREEN_WIDTH, SCREEN_HEIGHT, name = "The Land"):
-        db.DB_init()
+        db.init()
         self.size = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.display = pygame.Surface((SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         self.name = name
