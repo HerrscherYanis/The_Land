@@ -15,7 +15,7 @@ class Screen:
         self.size = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.display = pygame.Surface((SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         self.name = name
-        self.map = 'data/map.json'
+        self.map = 'data/map/map.json'
         pygame.init()
         pygame.display.set_caption(self.name)
         self.run = True
