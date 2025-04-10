@@ -54,3 +54,4 @@ class RFID:
 				else:
 					print("Erreur badge")
 			time.sleep_ms(500)
+			
