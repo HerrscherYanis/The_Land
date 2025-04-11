@@ -27,9 +27,8 @@ class Editor:
         self.movement = [False, False, False, False]
         
         self.tilemap = Tilemap(self, tile_size=16)
-        self.name = self.inputxt()
         try:
-            self.tilemap.load("data/map/"+self.name+".json")
+            self.tilemap.load("data/map/"+self.inputxt()+".json")
         except FileNotFoundError:
             pass
         
@@ -48,10 +47,14 @@ class Editor:
         text_font = pygame.font.SysFont("Arial", 30)
         name = []
         while True:
+            self.screen.fill((0, 0, 0))
             self.draw_text("Enter your name map:", text_font, (255,255,255),220 , 150)
             self.draw_text("".join(name), text_font, (255,255,255),220 , 200)
             pygame.display.update()
             for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
                 if event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_a:
                                 name.append("a")
@@ -107,6 +110,10 @@ class Editor:
                                 name.append("z")
                             if event.key == pygame.K_RETURN:
                                 return "".join(name)
+                            if event.key == pygame.K_BACKSPACE:
+                                if len(name) > 0:
+                                    name.pop(-1)
+                            
 
     def draw_text(self, text, font, text_col, x, y):
         img = font.render(text, True, text_col)
