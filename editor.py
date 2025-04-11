@@ -27,8 +27,9 @@ class Editor:
         self.movement = [False, False, False, False]
         
         self.tilemap = Tilemap(self, tile_size=16)
+        self.name = self.inputxt()
         try:
-            self.tilemap.load("data/map/"+self.inputxt()+".json")
+            self.tilemap.load("data/map/"+self.name+".json")
         except FileNotFoundError:
             pass
         
