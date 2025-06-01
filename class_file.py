@@ -7,6 +7,7 @@ from scripts.entities import PhysicsEntity, Player
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 import db
+from Component import Communication
 
 class Screen:
     object_stock = []
@@ -20,6 +21,9 @@ class Screen:
         pygame.display.set_caption(self.name)
         self.run = True
         self.clock = pygame.time.Clock()
+        self.inventory = ["Potion", "Épée"]
+        self.spawned_items = [] 
+
 
         self.movement = [False, False]
 
@@ -41,15 +45,18 @@ class Screen:
         self.clouds = Clouds(self.assets['clouds'], count=16)
         
         self.player = Player(self, (50, 90), (8, 15))
+
+        self.enemy = Enemy(150, 150) # position de départ de l'ennemi 
         
         self.tilemap = Tilemap(self, tile_size=16)
         self.tilemap.load(self.map)
         
         self.scroll = [0, 0]
+        self.rfid = Communication()
 
     def start(self):
         while self.run: 
-            if self.player.check("d") == True:
+            if self.rfid.SendBack() == True:
                 self.display.fill((14,219,248))
                 
                 self.scroll[0] += (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30
@@ -63,6 +70,32 @@ class Screen:
                 
                 self.player.jump(self.tilemap, (self.movement[1] - self.movement[0], 0))
                 self.player.render(self.display, offset=render_scroll)
+
+                self.enemy.update(self.player.rect().center)
+                self.enemy.render(self.display, offset=render_scroll)
+
+                for item in self.spawned_items:
+                    color = (255, 255, 0) if item["type"] == "potion" else (100, 100, 255)
+                    pygame.draw.rect(self.display, color, pygame.Rect(
+                        item["pos"][0] - render_scroll[0],
+                        item["pos"][1] - render_scroll[1],
+                        10, 10))
+
+                player_rect = pygame.Rect(self.player.pos[0], self.player.pos[1], 10, 10)
+                to_remove = []
+                for item in self.spawned_items:
+                    item_rect = pygame.Rect(item["pos"][0], item["pos"][1], 10, 10)
+                    if player_rect.colliderect(item_rect):
+                        print(f"{item['type'].capitalize()} ramassée !")
+                        to_remove.append(item)
+                        # Tu peux ici ajouter des effets (ex : soin, épée équipée...)
+
+                for item in to_remove:
+                    self.spawned_items.remove(item)
+
+
+                self.draw_inventory(self.display)
+
                 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -87,6 +120,20 @@ class Screen:
                             self.movement[0] = False
                         if event.key == pygame.K_RIGHT:
                             self.movement[1] = False
+
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        mouse_pos = pygame.mouse.get_pos()
+                        scale_x = self.size.get_width() / self.display.get_width()
+                        scale_y = self.size.get_height() / self.display.get_height()
+                        scaled_mouse = (mouse_pos[0] / scale_x, mouse_pos[1] / scale_y)
+
+                        for rect, item in self.item_rects:
+                            if rect.collidepoint(scaled_mouse):
+                                if item == "Potion":
+                                    self.spawned_items.append({"type": "potion", "pos": [self.player.pos[0] + 30, self.player.pos[1]]})
+                                elif item == "Épée":
+                                    self.spawned_items.append({"type": "epee", "pos": [self.player.pos[0] + 30, self.player.pos[1]]})
+
                 
                 self.size.blit(pygame.transform.scale(self.display, self.size.get_size()), (0, 0))
                 pygame.display.update()
@@ -102,3 +149,28 @@ class Screen:
             print("load")
             self.tilemap.load(data["screen"]["map"])
             self.player.pos = data["player"]["pos"]
+    def draw_inventory(self, screen):
+        font = pygame.font.SysFont(None, 24)
+        self.item_rects = []  # Stocker les zones cliquables
+
+        for i, item in enumerate(self.inventory):
+            text = font.render(item, True, (255, 255, 255))
+            rect = text.get_rect(topleft=(10, 10 + i * 20))
+            screen.blit(text, rect)
+            self.item_rects.append((rect, item))  # Sauvegarde pour le clic
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.Surface((16, 16))
+        self.image.fill((255, 0, 0))  # Couleur rouge pour l’ennemi
+        self.rect = self.image.get_rect(center=(x, y))
+
+    def update(self, player_pos):
+        if self.rect.x < player_pos[0]: self.rect.x += 1
+        if self.rect.x > player_pos[0]: self.rect.x -= 1
+        if self.rect.y < player_pos[1]: self.rect.y += 1
+        if self.rect.y > player_pos[1]: self.rect.y -= 1
+
+    def render(self, screen, offset=(0, 0)):
+        screen.blit(self.image, (self.rect.x - offset[0], self.rect.y - offset[1]))
