@@ -18,6 +18,8 @@ class Communication():
 			print(data)
 			if uuid_view(data.get("uid")) == True:
 				interact("player.dbs", """INSERT INTO player (uuid, name,life_current,life_max,strength, xp, level )VALUES(?,?,?,?,?,?,?)""", (data.get("uid"), "Default",data.get("data")[0], data.get("data")[1], data.get("data")[2], data.get("data")[3], data.get("data")[4]))
-				return True
+				print("True")
 		except json.JSONDecodeError:
-			return False
+			print("False")
+df = Communication()
+df.SendBack()

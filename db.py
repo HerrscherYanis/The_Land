@@ -29,7 +29,7 @@ def uuid_view(uuid):
     conn=sq.connect("data/sql/player.dbs")
     mycursor = conn.cursor()
 
-    mycursor.execute("SELECT * FROM player WHERE uuid = ?", uuid)
+    mycursor.execute("SELECT * FROM player WHERE uuid = ?", (uuid,))
 
     myresult = mycursor.fetchone()
 
