@@ -10,6 +10,7 @@ class PhysicsEntity:
         self.size = size
         self.velocity = [0, 0]
         self.collisions = {'up': False, 'down': False, 'right': False, 'left': False}
+        self.facing_right = True
         
         self.action = ''
         self.anim_offset = (-3, -3)
