@@ -1,6 +1,4 @@
 import sqlite3 as sq
-#import random
-import uuid
 import os
 
 def init():
@@ -21,12 +19,21 @@ def interact(name, arg, arg2=None):
     conn.close()
     return ret
 
-def player_gen(name, life, strength, xp, level, uuid = uuid.uuid4()):
-     create_folder()
-     interact("player.dbs", """INSERT INTO player (uuid, name,life_current,life_max,strength, xp, level )VALUES(?,?,?,?,?,?,?)""", (str(uuid), name,life, life, strength, xp, level))
-
 def create_folder():
     try:
         os.mkdir("./data/sql")
     except:
         pass
+
+def uuid_view(uuid):
+    conn=sq.connect("data/sql/player.dbs")
+    mycursor = conn.cursor()
+
+    mycursor.execute("SELECT * FROM player WHERE uuid = ?", uuid)
+
+    myresult = mycursor.fetchone()
+
+    if myresult:
+        return True
+    else:
+        return False
