@@ -42,79 +42,7 @@ class Editor:
         self.clicking = False
         self.right_clicking = False
         self.shift = False
-        self.ongrid = True
-
-    def inputxt(self):
-        text_font = pygame.font.SysFont("Arial", 30)
-        name = []
-        while True:
-            self.screen.fill((0, 0, 0))
-            self.draw_text("Enter your name map:", text_font, (255,255,255),220 , 150)
-            self.draw_text("".join(name), text_font, (255,255,255),220 , 200)
-            pygame.display.update()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.KEYDOWN:
-                            if event.key == pygame.K_a:
-                                name.append("a")
-                            if event.key == pygame.K_b:
-                                name.append("b")
-                            if event.key == pygame.K_c:
-                                name.append("c")
-                            if event.key == pygame.K_d:
-                                name.append("d")
-                            if event.key == pygame.K_e:
-                                name.append("e")
-                            if event.key == pygame.K_f:
-                                name.append("f")
-                            if event.key == pygame.K_g:
-                                name.append("g")
-                            if event.key == pygame.K_h:
-                                name.append("h")
-                            if event.key == pygame.K_i:
-                                name.append("i")
-                            if event.key == pygame.K_j:
-                                name.append("j")
-                            if event.key == pygame.K_k:
-                                name.append("k")
-                            if event.key == pygame.K_l:
-                                name.append("l")
-                            if event.key == pygame.K_m:
-                                name.append("m")
-                            if event.key == pygame.K_n:
-                                name.append("n")
-                            if event.key == pygame.K_o:
-                                name.append("o")
-                            if event.key == pygame.K_p:
-                                name.append("p")
-                            if event.key == pygame.K_q:
-                                name.append("q")
-                            if event.key == pygame.K_r:
-                                name.append("r")
-                            if event.key == pygame.K_s:
-                                name.append("s")
-                            if event.key == pygame.K_t:
-                                name.append("t")
-                            if event.key == pygame.K_u:
-                                name.append("u")
-                            if event.key == pygame.K_v:
-                                name.append("v")
-                            if event.key == pygame.K_w:
-                                name.append("w")
-                            if event.key == pygame.K_x:
-                                name.append("x")
-                            if event.key == pygame.K_y:
-                                name.append("y")
-                            if event.key == pygame.K_z:
-                                name.append("z")
-                            if event.key == pygame.K_RETURN:
-                                return "".join(name)
-                            if event.key == pygame.K_BACKSPACE:
-                                if len(name) > 0:
-                                    name.pop(-1)
-                            
+        self.ongrid = True                            
 
     def draw_text(self, text, font, text_col, x, y):
         img = font.render(text, True, text_col)
@@ -218,5 +146,80 @@ class Editor:
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
             pygame.display.update()
             self.clock.tick(60)
+
+    def inputxt(self):
+        text_font = pygame.font.SysFont("Arial", 30)
+        name = []
+        while True:
+            self.screen.fill((0, 0, 0))
+            self.draw_text("".join(name) + "_", text_font, (255,255,255),220 , 200)
+            self.draw_text("Enter your name map", text_font, (255,255,255),220 , 150)
+            
+
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_a:
+                                name.append("a")
+                            if event.key == pygame.K_b:
+                                name.append("b")
+                            if event.key == pygame.K_c:
+                                name.append("c")
+                            if event.key == pygame.K_d:
+                                name.append("d")
+                            if event.key == pygame.K_e:
+                                name.append("e")
+                            if event.key == pygame.K_f:
+                                name.append("f")
+                            if event.key == pygame.K_g:
+                                name.append("g")
+                            if event.key == pygame.K_h:
+                                name.append("h")
+                            if event.key == pygame.K_i:
+                                name.append("i")
+                            if event.key == pygame.K_j:
+                                name.append("j")
+                            if event.key == pygame.K_k:
+                                name.append("k")
+                            if event.key == pygame.K_l:
+                                name.append("l")
+                            if event.key == pygame.K_m:
+                                name.append("m")
+                            if event.key == pygame.K_n:
+                                name.append("n")
+                            if event.key == pygame.K_o:
+                                name.append("o")
+                            if event.key == pygame.K_p:
+                                name.append("p")
+                            if event.key == pygame.K_q:
+                                name.append("q")
+                            if event.key == pygame.K_r:
+                                name.append("r")
+                            if event.key == pygame.K_s:
+                                name.append("s")
+                            if event.key == pygame.K_t:
+                                name.append("t")
+                            if event.key == pygame.K_u:
+                                name.append("u")
+                            if event.key == pygame.K_v:
+                                name.append("v")
+                            if event.key == pygame.K_w:
+                                name.append("w")
+                            if event.key == pygame.K_x:
+                                name.append("x")
+                            if event.key == pygame.K_y:
+                                name.append("y")
+                            if event.key == pygame.K_z:
+                                name.append("z")
+                            if event.key == pygame.K_SPACE:
+                                name.append(" ")
+                            if event.key == pygame.K_RETURN:
+                                return "".join(name)
+                            if event.key == pygame.K_BACKSPACE:
+                                if len(name) > 0:
+                                    name.pop(-1)
 
 Editor().run()

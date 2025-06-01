@@ -15,6 +15,7 @@ class PhysicsEntity:
         self.anim_offset = (-3, -3)
         self.flip = False
         self.set_action('idle')
+        self.lw = 1
     
     def rect(self):
         return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
@@ -36,9 +37,11 @@ class PhysicsEntity:
                 if frame_movement[0] > 0:
                     entity_rect.right = rect.left
                     self.collisions['right'] = True
+                    self.lw = 1
                 if frame_movement[0] < 0:
                     entity_rect.left = rect.right
                     self.collisions['left'] = True
+                    self.lw = 0
                 self.pos[0] = entity_rect.x
         
         self.pos[1] += frame_movement[1]
@@ -48,9 +51,11 @@ class PhysicsEntity:
                 if frame_movement[1] > 0:
                     entity_rect.bottom = rect.top
                     self.collisions['down'] = True
+
                 if frame_movement[1] < 0:
                     entity_rect.top = rect.bottom
                     self.collisions['up'] = True
+
                 self.pos[1] = entity_rect.y
                 
         if movement[0] > 0:
@@ -78,8 +83,16 @@ class Player(PhysicsEntity):
         self.strength = 0
         self.xp = 0
         self.level = 1
+        
+    def fight(self, tilemap, movement=(0, 0)):
+        super().update(tilemap, movement=movement)
+        if self.lw == 1:
+            print(self.pos[0] + 30)
+            
+        else:
+            print(self.player.pos[0] + 30)
     
-    def update(self, tilemap, movement=(0, 0)):
+    def jump(self, tilemap, movement=(0, 0)):
         super().update(tilemap, movement=movement)
         
         self.air_time += 1

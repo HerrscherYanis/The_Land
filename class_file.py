@@ -61,13 +61,15 @@ class Screen:
                 
                 self.tilemap.render(self.display, offset=render_scroll)
                 
-                self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
+                self.player.jump(self.tilemap, (self.movement[1] - self.movement[0], 0))
                 self.player.render(self.display, offset=render_scroll)
                 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
                     if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_a:
+                            self.player.fight(self.tilemap, (self.movement[1] - self.movement[0], 0))
                         if event.key == pygame.K_s:
                             self.save()
                         if event.key == pygame.K_l:
