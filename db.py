@@ -1,8 +1,10 @@
 import sqlite3 as sq
 #import random
 import uuid
+import os
 
 def init():
+    create_folder()
     interact("player.dbs", """create table if not exists player (id integer primary key autoincrement NOT NULL, uuid text NOT NULL, name text NOT NULL, life_current integer NOT NULL, life_max integer NOT NULL, strength integer NOT NULL, xp integer NOT NULL, level integer NOT NULL)""")
     interact("inventory.dbs", """create table if not exists inventory (id integer primary key autoincrement NOT NULL, name text)""")
     interact("enemy.dbs", """create table if not exists enemy (id integer primary key autoincrement NOT NULL, name text)""")
@@ -20,5 +22,11 @@ def interact(name, arg, arg2=None):
     return ret
 
 def player_gen(name, life, strength, xp, level, uuid = uuid.uuid4()):
+     create_folder()
      interact("player.dbs", """INSERT INTO player (uuid, name,life_current,life_max,strength, xp, level )VALUES(?,?,?,?,?,?,?)""", (str(uuid), name,life, life, strength, xp, level))
 
+def create_folder():
+    try:
+        os.mkdir("./data/sql")
+    except:
+        pass
